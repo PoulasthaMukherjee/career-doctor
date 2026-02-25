@@ -47,13 +47,12 @@ export async function createResume(formData: FormData) {
             }
 
             if (fullText.trim().length > 20) {
-                const { askGemini } = await import('./ai');
-                const prompt = `Extract structured resume data from this text. Return JSON with: fullName, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${fullText}`;
-                const parsed = await askGemini(prompt);
-                if (parsed) {
+                const { parseResumeWithAI } = await import('./ai');
+                const parsedObj = await parseResumeWithAI(fullText);
+                if (parsedObj) {
                     await prisma.resume.update({
                         where: { id: resume.id },
-                        data: { parsedContent: parsed },
+                        data: { parsedContent: JSON.stringify(parsedObj) },
                     });
                 }
             }

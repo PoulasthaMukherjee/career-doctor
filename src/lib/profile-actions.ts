@@ -117,17 +117,16 @@ export async function parseAndFillFromResume(resumeId: string) {
 
         if (fullText.trim().length <= 20) return { error: "Failed to extract text from PDF" };
 
-        const prompt = `Extract structured resume data from this text. Return JSON with: name, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${fullText}`;
-        const parsedJson = await askGemini(prompt);
-        if (!parsedJson) return { error: "Failed to extract text from PDF" };
+        const { parseResumeWithAI } = await import('./ai');
+        const parsedObj = await parseResumeWithAI(fullText);
+        if (!parsedObj) return { error: "Failed to extract text from PDF" };
 
         await prisma.resume.update({
             where: { id: resumeId },
-            data: { parsedContent: parsedJson },
+            data: { parsedContent: JSON.stringify(parsedObj) },
         });
 
-        const parsed = JSON.parse(parsedJson);
-        return applyParsedToProfile(session.user.id, parsed);
+        return applyParsedToProfile(session.user.id, parsedObj);
     } catch (e) {
         console.error('Parse error:', e);
         return { error: "AI parsing failed. Please try again." };
