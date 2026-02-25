@@ -101,12 +101,23 @@ export async function parseAndFillFromResume(resumeId: string) {
 
     try {
         const buffer = Buffer.from(resume.fileData, 'base64');
-        const input = await import('pdf-parse');
-        const pdfParse = (input as any).default || input;
-        const pdfData = await pdfParse(buffer);
-        if (!pdfData.text) return { error: "Failed to extract text from PDF" };
+        const pdfjsLib = await import('pdfjs-dist');
+        const data = new Uint8Array(buffer);
+        const doc = await pdfjsLib.getDocument({ data, useSystemFonts: true }).promise;
 
-        const prompt = `Extract structured resume data from this text. Return JSON with: name, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${pdfData.text}`;
+        let fullText = "";
+        for (let i = 1; i <= doc.numPages; i++) {
+            const page = await doc.getPage(i);
+            const content = await page.getTextContent();
+            const strings = content.items
+                .filter((item: any) => 'str' in item)
+                .map((item: any) => item.str);
+            fullText += strings.join(' ') + '\n\n';
+        }
+
+        if (fullText.trim().length <= 20) return { error: "Failed to extract text from PDF" };
+
+        const prompt = `Extract structured resume data from this text. Return JSON with: name, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${fullText}`;
         const parsedJson = await askGemini(prompt);
         if (!parsedJson) return { error: "Failed to extract text from PDF" };
 

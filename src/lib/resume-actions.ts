@@ -32,12 +32,23 @@ export async function createResume(formData: FormData) {
         // Parse resume from base64 data
         try {
             const buffer = Buffer.from(fileData, 'base64');
-            const input = await import('pdf-parse');
-            const pdfParse = (input as any).default || input;
-            const pdfData = await pdfParse(buffer);
-            if (pdfData.text) {
+            const pdfjsLib = await import('pdfjs-dist');
+            const data = new Uint8Array(buffer);
+            const doc = await pdfjsLib.getDocument({ data, useSystemFonts: true }).promise;
+
+            let fullText = "";
+            for (let i = 1; i <= doc.numPages; i++) {
+                const page = await doc.getPage(i);
+                const content = await page.getTextContent();
+                const strings = content.items
+                    .filter((item: any) => 'str' in item)
+                    .map((item: any) => item.str);
+                fullText += strings.join(' ') + '\n\n';
+            }
+
+            if (fullText.trim().length > 20) {
                 const { askGemini } = await import('./ai');
-                const prompt = `Extract structured resume data from this text. Return JSON with: fullName, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${pdfData.text}`;
+                const prompt = `Extract structured resume data from this text. Return JSON with: fullName, title, email, phone, location, summary, skills (string[]), experience (array of {title, company, startDate, endDate, description}), education (array of {degree, institution, year}), projects (array of {name, description, url}), certifications (string[]), achievements (string[]), links (array of {label, url}).\n\nResume text:\n${fullText}`;
                 const parsed = await askGemini(prompt);
                 if (parsed) {
                     await prisma.resume.update({

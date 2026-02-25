@@ -30,8 +30,7 @@ export async function extractAndParseResume(filePath: string): Promise<string | 
 }
 
 async function extractTextFromPDF(buffer: Buffer): Promise<string> {
-    // Use pdfjs-dist directly — more reliable than pdf-parse in Node.js
-    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+    const pdfjsLib = await import('pdfjs-dist');
 
     const data = new Uint8Array(buffer);
     const doc = await pdfjsLib.getDocument({ data, useSystemFonts: true }).promise;
