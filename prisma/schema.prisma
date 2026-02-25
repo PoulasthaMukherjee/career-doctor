@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  resumes       Resume[]
+  applications  Application[]
+  weeklyReports WeeklyReport[]
+  experiments   Experiment[]
+  profile       Profile?
+}
+
+model Profile {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fullName       String?
+  title          String?
+  email          String?
+  phone          String?
+  location       String?
+  summary        String?
+  skills         String?  // JSON array as string
+  experience     String?  // JSON array as string
+  education      String?  // JSON array as string
+  links          String?  // JSON array as string
+  projects       String?  // JSON array as string
+  achievements   String?  // JSON array as string
+  certifications String?  // JSON array as string
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  version   String // e.g., "Resume A", "Resume B", "Backend Focus"
+  content   String? // Optional text content or link
+  fileName  String? // Original file name
+  fileData  String? // Base64-encoded PDF data for cloud storage
+  parsedContent String? // AI-extracted structured resume data (JSON)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applications Application[]
+}
+
+model Application {
+  id       String  @id @default(cuid())
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeId String?
+  resume   Resume? @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+
+  company         String
+  role            String
+  companySize     String? // e.g., "startup (<50)", "mid-size (50-500)", "enterprise (>500)"
+  location        String?
+  workMode        String? // e.g., "remote", "hybrid", "onsite"
+  source          String? // e.g., "LinkedIn", "Company Website", "Referral", "Easy Apply"
+  applyTime       DateTime @default(now())
+  daysSincePosted Int?
+  outcome         String   @default("IGNORED")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WeeklyReport {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekStart DateTime
+  weekEnd   DateTime
+  createdAt DateTime @default(now())
+
+  diagnoses     Diagnosis[]
+  prescriptions Prescription[]
+}
+
+model Diagnosis {
+  id             String       @id @default(cuid())
+  weeklyReportId String
+  weeklyReport   WeeklyReport @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  message        String // e.g., "You apply too late. Applications within 24h have 3x higher response."
+  metric         String? // Optional metadata about which metric triggered this
+  createdAt      DateTime     @default(now())
+}
+
+model Prescription {
+  id             String       @id @default(cuid())
+  weeklyReportId String
+  weeklyReport   WeeklyReport @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  task           String // e.g., "Apply to 10 jobs < 48h old"
+  completed      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+model Experiment {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String // e.g., "Resume A vs B for Backend"
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  status      String    @default("ACTIVE") // ACTIVE, COMPLETED
+  createdAt   DateTime  @default(now())
+}

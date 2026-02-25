@@ -1,0 +1,127 @@
+'use server';
+
+import { computeMetrics, ApplicationInput } from './engines/analysis';
+import { runDiagnosis } from './engines/diagnosis';
+import { runPrescription } from './engines/prescription';
+import { getAIInsights } from './ai';
+import { signIn as nextAuthSignIn } from "@/lib/auth";
+import AuthError from "next-auth";
+import bcrypt from "bcryptjs";
+import { prisma } from "./prisma";
+import { registerSchema } from "./validations";
+
+export async function getDashboardData(userId: string) {
+    const applications = await prisma.application.findMany({
+        where: { userId },
+        include: { resume: true }
+    });
+
+    if (applications.length === 0) {
+        return {
+            metrics: null,
+            diagnoses: [],
+            prescriptions: [],
+            funnel: { applied: 0, viewed: 0, responded: 0, interview: 0, offer: 0 },
+            aiInsights: null,
+        }
+    }
+
+    // Map to the shape expected by the purely functional engine
+    const appInputs: ApplicationInput[] = applications.map((app: any) => ({
+        outcome: app.outcome,
+        companySize: app.companySize,
+        role: app.role,
+        source: app.source,
+        daysSincePosted: app.daysSincePosted,
+        resume: app.resume ? { version: app.resume.version } : null
+    }));
+
+    const metrics = computeMetrics(appInputs);
+    const diagnoses = runDiagnosis(metrics);
+    const prescriptions = runPrescription(diagnoses);
+
+    // Compute Funnel data
+    const totalApplied = appInputs.length;
+    const totalResponses = appInputs.filter(a => a.outcome !== 'IGNORED').length;
+
+    const funnel = {
+        applied: totalApplied,
+        viewed: Math.max(Math.round(totalApplied * 0.6), totalResponses),
+        responded: totalResponses,
+        interview: appInputs.filter(a => a.outcome === 'INTERVIEW' || a.outcome === 'OFFER').length,
+        offer: appInputs.filter(a => a.outcome === 'OFFER').length
+    };
+
+    // Get AI insights (non-blocking — gracefully returns null if no key)
+    let aiInsights = null;
+    try {
+        aiInsights = await getAIInsights(JSON.stringify({
+            metrics,
+            funnel,
+            applicationCount: applications.length,
+            companies: applications.map(a => a.company).slice(0, 10),
+            roles: applications.map(a => a.role).slice(0, 10),
+        }));
+    } catch {
+        // AI insights are optional
+    }
+
+    return {
+        metrics,
+        diagnoses,
+        prescriptions,
+        funnel,
+        aiInsights,
+    };
+}
+
+export async function signIn(formData: FormData) {
+    try {
+        await nextAuthSignIn("credentials", formData);
+    } catch (error: any) {
+        if (error?.type === "CredentialsSignin" || error?.name === "CredentialsSignin") {
+            return { error: "Invalid credentials." };
+        }
+        // NextAuth throws redirects on success, we must rethrow it
+        if (error?.message?.includes("NEXT_REDIRECT") || error?.digest?.includes('NEXT_REDIRECT')) {
+            throw error;
+        }
+        return { error: "Something went wrong." };
+    }
+}
+
+export async function registerUser(formData: FormData) {
+    try {
+        const rawData = Object.fromEntries(formData.entries());
+        const validatedData = registerSchema.safeParse(rawData);
+
+        if (!validatedData.success) {
+            return { error: validatedData.error.issues[0].message };
+        }
+
+        const { name, email, password } = validatedData.data;
+
+        const existingUser = await prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (existingUser) {
+            return { error: "A user with this email already exists." };
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+            },
+        });
+
+        return { success: "Account created successfully. Please sign in." };
+    } catch (error) {
+        console.error("Registration error:", error);
+        return { error: "Something went wrong during registration." };
+    }
+}

@@ -1,0 +1,43 @@
+Γ£à Running engines with mock data...
+
+--- ANALYSIS METRICS ---
+{
+  "overallResponseRate": 0.2222222222222222,
+  "responseRateByCompanySize": {
+    "startup (<500)": 1,
+    "enterprise (>500)": 0
+  },
+  "responseRateByRoleCluster": {
+    "Backend": 0.6666666666666666,
+    "Other": 0,
+    "Frontend": 0
+  },
+  "responseRateBySource": {
+    "Referral": 0.5,
+    "Company Website": 0.3333333333333333,
+    "Easy Apply": 0
+  },
+  "responseRateByApplySpeed": {
+    "<24h": 0.6666666666666666,
+    "24h-48h": 0,
+    ">48h": 0
+  },
+  "responseRateByResumeVersion": {
+    "Resume B": 0.6666666666666666,
+    "Resume A": 0
+  }
+}
+
+--- DIAGNOSES ---
+[applySpeed] Applications older than 48h are yielding very low conversions. Stop applying to stale jobs.
+[companySize] You perform better with startup (<500) companies. Focus your efforts there.
+[resumeVersion] Resume B performs significantly better overall (67% response rate).
+[roleCluster] You are targeting oversaturated roles in Other. The yield is extremely low.
+[roleCluster] You are targeting oversaturated roles in Frontend. The yield is extremely low.
+
+--- PRESCRIPTIONS ---
+- Apply to at least 10 jobs that are < 24h old this week.
+- Target 5 applications specifically to startup (<500) companies.
+- Use Resume B exclusively for relevant roles this week.
+- Avoid generic Other applications. Pivot to a niche or adjacent title.
+- Avoid generic Frontend applications. Pivot to a niche or adjacent title.
