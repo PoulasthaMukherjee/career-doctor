@@ -1,107 +1,124 @@
 <div align="center">
-  <h1>🩺 CareerDoctor</h1>
-  <p><strong>Your AI-Powered Career Copilot</strong></p>
-  <p>CareerDoctor is an intelligent, full-stack application designed to instantly analyze resumes, track job applications, and provide strategic, data-driven career coaching using Google Gemini AI.</p>
+
+# 🩺 CareerDoctor
+
+**Your career has symptoms. We have the diagnosis.**
+
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![AI Powered](https://img.shields.io/badge/AI-Multi--Model-blueviolet?style=for-the-badge&logo=google-gemini)](https://ai.google.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+---
+
+*Drop your resume. Get diagnosed. Land the job.*
+
 </div>
 
+<br>
+
+## 💡 The Idea
+
+Most career tools make you fill out endless forms. CareerDoctor flips that.
+
+**Upload your resume once** → the AI reads it, fills your entire profile, diagnoses your career health, finds matching jobs, and tracks every application. Zero busywork.
+
+<br>
+
+## ⚡ The Flow
+
+```
+📄 Upload Resume  →  🤖 AI Parses Everything  →  ✏️ Edit & Polish  →  🔬 Get Diagnosed  →  🔍 Find Jobs  →  📋 Track Apps
+```
+
+<br>
+
+## 🔬 The Diagnosis
+
+> *This is what makes CareerDoctor different.*
+
+When you hit **Analyze**, the AI doesn't give generic advice. It reads *your* actual profile — every skill, every role, every gap — and produces a full career diagnosis:
+
+| Analysis | What You Get |
+|----------|-------------|
+| 🎯 **Profile Strength** | A competitiveness score with specific weaknesses to fix |
+| 📈 **Career Trajectory** | Where you are → where you're heading → what's next |
+| 🏆 **Role Matches** | Best-fit roles with match %, salary estimates, and stretch indicators |
+| ⚠️ **Skill Gaps** | Missing skills ranked by importance, with learn-time estimates |
+| 📋 **Action Plan** | Prioritized steps: what to do *this week* to level up |
+| 🏭 **Industry Fit** | Which industries value your background the most |
+
+<br>
+
+## 🔄 Resume → Profile in Seconds
+
+```
+You upload a PDF
+        ↓
+AI extracts everything:
+  • Name, title, location, contact
+  • Skills (tagged & categorized)
+  • Work experience (company, role, dates, descriptions)
+  • Education (degree, institution, GPA)
+  • Projects, certifications, achievements
+  • Links (GitHub, LinkedIn, portfolio)
+  • Professional summary
+        ↓
+Your profile is ready. Edit anything. Export as PDF.
+```
+
+<br>
+
+## 🔍 Smart Job Search
+
+Search live job postings with filters that matter:
+
+- **Date posted** — Last 24h, 3 days, 7 days, 30 days
+- **Type** — Full-time, contract, internship, part-time
+- **Experience** — Entry, mid, senior, no-experience
+- **Remote** — Toggle for remote-only listings
+- **Direct apply links** — One click to the actual application
+
+<br>
+
+## 📊 Application Pipeline
+
+Track every application through the funnel:
+
+```
+ Wishlist  →  Applied  →  Interview  →  Offer
+                                  ↘  Rejected
+```
+
+Your dashboard shows the conversion at each stage, your response rate, and AI-generated tips to improve it.
+
+<br>
+
+## 🧬 Under the Hood
+
+CareerDoctor cascades through **20 AI models across 6 providers** for maximum reliability:
+
+```
+Gemini 2.5 Flash → Llama 3.3 70B → Qwen 72B → Command R+ → Mistral Small
+→ Mixtral 8x7B → Gemma 27B → Mistral Nemo → Gemma 12B → Flash Lite → ...
+```
+
+If one model is rate-limited, the next one picks up instantly. You never wait.
+
+<br>
+
+## ✨ Also...
+
+- 🌙 **Dark mode** — easy on the eyes, gorgeous on OLED
+- 📱 **Fully responsive** — phone, tablet, desktop
+- 🔐 **Google & GitHub login** — no passwords
+- ⚡ **Fast** — server components, edge-ready, zero bloat
+
+<br>
+
 ---
 
-## ✨ Features
-
-- 🤖 **AI Resume Parsing**: Upload a PDF resume, and CareerDoctor uses Google Gemini (via edge-compatible PDF extraction) to instantly structure your experience, education, and skills into a rich digital profile.
-- 📊 **Application Tracking**: Keep a kanban-style record of every job application, from Wishlist to Offer.
-- 🧠 **Career Intelligence**: Get real-time, AI-driven insights on your career trajectory, skill gaps, and interview readiness based on your unique profile and application history.
-- 🔍 **Live Job Board Integration**: Seamlessly search for active job postings matching your skills via the Google Jobs API (RapidAPI).
-- 🔐 **Secure Authentication**: Built-in Google & GitHub OAuth via NextAuth.js.
-- 🌓 **Sleek UI/UX**: Fully responsive, accessible, dark-mode ready interface built with Tailwind CSS and Radix UI primitives.
-
-## 🛠️ Tech Stack
-
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, Server Actions)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Radix UI](https://www.radix-ui.com/) (Lucide Icons)
-- **Database**: [Turso](https://turso.tech/) (SQLite for the Edge) 
-- **ORM**: [Prisma](https://www.prisma.io/) (with `@libsql/client` Edge Adapters)
-- **AI Engine**: [Google Gemini Pro & Flash](https://ai.google.dev/) (`@google/generative-ai`)
-- **Authentication**: [Auth.js (NextAuth v5)](https://authjs.dev/)
-- **Deployment**: [Vercel](https://vercel.com)
-
-## 🚀 Getting Started
-
-### Prerequisites
-You will need Node.js `18+` and access to the following free APIs:
-- [Google Gemini API Key](https://aistudio.google.com/)
-- [Turso DB CLI](https://docs.turso.tech/cli/installation)
-- [RapidAPI (JSearch / Google Jobs)](https://rapidapi.com/letscrape-6bRBa3QGz10/api/jsearch)
-- Google / GitHub OAuth Credentials
-
-### Local Development
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/career-doctor.git
-   cd career-doctor
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up Environment Variables:**
-   Create a `.env` file in the root directory:
-   ```env
-   DATABASE_URL="file:./dev.db" # Local SQLite fallback
-   TURSO_AUTH_TOKEN=""          # Optional for local
-   AUTH_SECRET="your_generated_secret" # Run: npx auth secret
-   NEXTAUTH_URL="http://localhost:3000"
-
-   # AI & APIs
-   GEMINI_API_KEY="your_gemini_key"
-   RAPIDAPI_KEY="your_rapidapi_key"
-
-   # OAuth
-   GOOGLE_CLIENT_ID="your_google_id"
-   GOOGLE_CLIENT_SECRET="your_google_secret"
-   GITHUB_CLIENT_ID="your_github_id"
-   GITHUB_CLIENT_SECRET="your_github_secret"
-   ```
-
-4. **Initialize Database** (Local testing):
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   # Optional: Load dummy data
-   npx tsx prisma/seed.ts
-   ```
-
-5. **Start the Development Server:**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000)
-
----
-
-## ☁️ Deployment (Vercel + Turso)
-
-CareerDoctor is optimized for edge deployment on Vercel using Turso as the database.
-*Note: Due to Vercel's ephemeral filesystem, PDF resumes are instantly Base64 encoded and stored securely within the database upon upload.*
-
-1. **Provision Turso DB**:
-   ```bash
-   turso db create career-doctor
-   turso db show career-doctor --url     # Get your DATABASE_URL
-   turso db tokens create career-doctor  # Get your TURSO_AUTH_TOKEN
-   ```
-2. **Push Schema to Turso**:
-   Generate a SQL dump and pipe it to Turso:
-   ```bash
-   npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script > setup.sql
-   turso db shell career-doctor < setup.sql
-   ```
-3. **Deploy to Vercel**:
-   Import your repository to Vercel, add all your environment variables (using your new `libsql://` URL for `DATABASE_URL` and adding the `TURSO_AUTH_TOKEN`), and hit Deploy!
-
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
+<div align="center">
+  <p><strong>Built by Poulastha Mukherjee</strong></p>
+  <p><sub>© 2026 Poulastha Mukherjee. All rights reserved.</sub></p>
+</div>
