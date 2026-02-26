@@ -125,8 +125,8 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                     </div>
                     <p className="text-lg font-semibold text-[var(--text-primary)]">{analysis.headline}</p>
                 </div>
-                <button onClick={runAnalysis} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
-                    <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> Re-analyze
+                <button onClick={runAnalysis} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors whitespace-nowrap">
+                    <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> <span className="hidden md:inline">Re-analyze</span>
                 </button>
             </div>
 
@@ -212,19 +212,21 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                 <h3 className="text-sm font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-5 flex items-center gap-2"><Target className="h-4 w-4" /> Best Role Matches</h3>
                 <div className="space-y-3">
                     {analysis.roleMatches.map((role, i) => (
-                        <div key={i} className="flex items-center gap-4 p-4 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border)] hover:border-[var(--accent)]/40 transition-colors group">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
-                                <span className="text-sm font-bold text-[var(--accent)]">#{i + 1}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    <p className="font-semibold text-[var(--text-primary)] text-sm">{role.title}</p>
-                                    <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">{role.matchScore}% match</span>
-                                    {'levelAppropriate' in role && !role.levelAppropriate && <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">STRETCH</span>}
+                        <div key={i} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border)] hover:border-[var(--accent)]/40 transition-colors group">
+                            <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                    <span className="text-sm font-bold text-[var(--accent)]">#{i + 1}</span>
                                 </div>
-                                <p className="text-xs text-[var(--text-secondary)] mt-0.5">{role.reason}</p>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <p className="font-semibold text-[var(--text-primary)] text-sm">{role.title}</p>
+                                        <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">{role.matchScore}% match</span>
+                                        {'levelAppropriate' in role && !role.levelAppropriate && <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">STRETCH</span>}
+                                    </div>
+                                    <p className="text-xs text-[var(--text-secondary)] mt-0.5">{role.reason}</p>
+                                </div>
                             </div>
-                            <div className="text-right flex-shrink-0">
+                            <div className="text-left sm:text-right flex-shrink-0 pl-13 sm:pl-0">
                                 <p className="text-sm font-bold text-[var(--text-primary)]">{role.salaryRange}</p>
                                 <p className="text-[10px] text-[var(--text-tertiary)] uppercase">Estimated</p>
                             </div>
@@ -261,16 +263,14 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                     <h3 className="text-sm font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-5 flex items-center gap-2"><CheckCircle2 className="h-4 w-4" /> Action Plan</h3>
                     <div className="space-y-3">
                         {analysis.actionItems.map((item, i) => (
-                            <div key={i} className="flex gap-3 p-3 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border)]">
-                                <div className="flex-shrink-0 mt-0.5">
+                            <div key={i} className="p-3 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border)]">
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <p className="text-sm font-semibold text-[var(--text-primary)]">{item.action}</p>
                                     <PriorityBadge priority={item.priority} />
                                 </div>
-                                <div className="flex-1">
-                                    <p className="text-sm font-semibold text-[var(--text-primary)]">{item.action}</p>
-                                    <p className="text-xs text-[var(--text-secondary)] mt-0.5 flex items-center gap-1">
-                                        <Zap className="h-3 w-3 text-amber-400" /> {item.impact}
-                                    </p>
-                                </div>
+                                <p className="text-xs text-[var(--text-secondary)] flex items-center gap-1">
+                                    <Zap className="h-3 w-3 text-amber-400" /> {item.impact}
+                                </p>
                             </div>
                         ))}
                     </div>

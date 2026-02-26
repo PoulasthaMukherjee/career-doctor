@@ -73,7 +73,7 @@ export default function ApplicationsClient({ applications: initial }: { applicat
     return (
         <div>
             {/* Status filter bar */}
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-2 -mx-1 px-1">
                 <button onClick={() => setFilter('ALL')}
                     className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${filter === 'ALL' ? 'bg-[var(--accent)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--border)] hover:bg-[var(--bg-tertiary)]'}`}>
                     All ({apps.length})
@@ -101,8 +101,8 @@ export default function ApplicationsClient({ applications: initial }: { applicat
                                 onClick={() => handleDelete(app.id)}
                                 disabled={isDeleting}
                                 className={`absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all ${isConfirming
-                                        ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                                        : 'text-[var(--text-tertiary)] hover:text-red-400 hover:bg-red-500/10'
+                                    ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                                    : 'text-[var(--text-tertiary)] hover:text-red-400 hover:bg-red-500/10'
                                     } ${isDeleting ? 'opacity-50' : ''}`}
                                 title="Remove"
                             >

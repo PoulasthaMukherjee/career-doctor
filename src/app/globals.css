@@ -58,3 +58,34 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Mobile touch-friendly enhancements */
+@media (max-width: 768px) {
+
+  /* Ensure minimum tap target size on touch devices */
+  button,
+  a,
+  select,
+  input[type="checkbox"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smaller min for inline icon buttons */
+  button:has(> svg:only-child) {
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  /* Respect safe areas on notched phones */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Smooth transitions for interactive elements */
+* {
+  -webkit-tap-highlight-color: transparent;
+}

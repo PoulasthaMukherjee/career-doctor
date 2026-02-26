@@ -195,11 +195,11 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                         <h1 className="text-3xl font-semibold text-[var(--text-primary)]">My Profile</h1>
                         <p className="text-[var(--text-secondary)] mt-1">Build your career profile. Import from resume or fill manually.</p>
                     </div>
-                    <div className="flex gap-3">
-                        <button onClick={downloadResumePDF} disabled={downloading} className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border)] rounded-lg hover:bg-[var(--bg-tertiary)] transition-colors disabled:opacity-50">
+                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <button onClick={downloadResumePDF} disabled={downloading} className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border)] rounded-lg hover:bg-[var(--bg-tertiary)] transition-colors disabled:opacity-50 w-full sm:w-auto">
                             <Download className="h-4 w-4" /> {downloading ? 'Generating...' : 'Download PDF'}
                         </button>
-                        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] rounded-lg transition-colors disabled:opacity-50">
+                        <button onClick={handleSave} disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] rounded-lg transition-colors disabled:opacity-50 w-full sm:w-auto">
                             <Save className="h-4 w-4" /> {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save Profile'}
                         </button>
                     </div>
@@ -304,8 +304,8 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                                     <button onClick={() => removeItem('experience', i)} className={removeBtnClass}><X className="h-4 w-4" /></button>
                                     {editExp === i ? (
                                         <div className="space-y-3">
-                                            <div className="grid grid-cols-2 gap-3"><EditableField value={exp.title} onChange={v => updateItem('experience', i, { ...exp, title: v })} placeholder="Title" /><EditableField value={exp.company} onChange={v => updateItem('experience', i, { ...exp, company: v })} placeholder="Company" /></div>
-                                            <div className="grid grid-cols-3 gap-3"><EditableField value={exp.location} onChange={v => updateItem('experience', i, { ...exp, location: v })} placeholder="Location" /><EditableField value={exp.startDate} onChange={v => updateItem('experience', i, { ...exp, startDate: v })} placeholder="Start" /><EditableField value={exp.endDate} onChange={v => updateItem('experience', i, { ...exp, endDate: v })} placeholder="End" /></div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"><EditableField value={exp.title} onChange={v => updateItem('experience', i, { ...exp, title: v })} placeholder="Title" /><EditableField value={exp.company} onChange={v => updateItem('experience', i, { ...exp, company: v })} placeholder="Company" /></div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"><EditableField value={exp.location} onChange={v => updateItem('experience', i, { ...exp, location: v })} placeholder="Location" /><EditableField value={exp.startDate} onChange={v => updateItem('experience', i, { ...exp, startDate: v })} placeholder="Start" /><EditableField value={exp.endDate} onChange={v => updateItem('experience', i, { ...exp, endDate: v })} placeholder="End" /></div>
                                             <EditableTextarea value={exp.description} onChange={v => updateItem('experience', i, { ...exp, description: v })} placeholder="Description" />
                                             <button onClick={() => setEditExp(null)} className="px-3 py-1 text-xs font-medium bg-[var(--accent)] text-white rounded-lg"><Check className="h-3 w-3 inline mr-1" />Done</button>
                                         </div>
@@ -353,8 +353,8 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                                     <button onClick={() => removeItem('education', i)} className={removeBtnClass}><X className="h-4 w-4" /></button>
                                     {editEdu === i ? (
                                         <div className="space-y-3">
-                                            <div className="grid grid-cols-2 gap-3"><EditableField value={edu.institution} onChange={v => updateItem('education', i, { ...edu, institution: v })} placeholder="Institution" /><EditableField value={edu.degree} onChange={v => updateItem('education', i, { ...edu, degree: v })} placeholder="Degree" /></div>
-                                            <div className="grid grid-cols-3 gap-3"><EditableField value={edu.specialization} onChange={v => updateItem('education', i, { ...edu, specialization: v })} placeholder="Specialization" /><EditableField value={edu.startYear} onChange={v => updateItem('education', i, { ...edu, startYear: v })} placeholder="Start" /><EditableField value={edu.endYear} onChange={v => updateItem('education', i, { ...edu, endYear: v })} placeholder="End" /></div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"><EditableField value={edu.institution} onChange={v => updateItem('education', i, { ...edu, institution: v })} placeholder="Institution" /><EditableField value={edu.degree} onChange={v => updateItem('education', i, { ...edu, degree: v })} placeholder="Degree" /></div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"><EditableField value={edu.specialization} onChange={v => updateItem('education', i, { ...edu, specialization: v })} placeholder="Specialization" /><EditableField value={edu.startYear} onChange={v => updateItem('education', i, { ...edu, startYear: v })} placeholder="Start" /><EditableField value={edu.endYear} onChange={v => updateItem('education', i, { ...edu, endYear: v })} placeholder="End" /></div>
                                             <EditableField value={edu.grade} onChange={v => updateItem('education', i, { ...edu, grade: v })} placeholder="Grade" />
                                             <button onClick={() => setEditEdu(null)} className="px-3 py-1 text-xs font-medium bg-[var(--accent)] text-white rounded-lg"><Check className="h-3 w-3 inline mr-1" />Done</button>
                                         </div>

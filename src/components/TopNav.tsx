@@ -2,6 +2,7 @@ import { Activity, Target, Briefcase, FileText, LogOut, Search, User } from 'luc
 import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
 import ThemeToggle from './ThemeToggle';
+import MobileNav from './MobileNav';
 
 export default async function TopNav() {
     const session = await auth();
@@ -13,25 +14,26 @@ export default async function TopNav() {
 
                     <Link href="/" className="flex items-center space-x-2">
                         <Activity className="h-6 w-6 text-[var(--accent)]" />
-                        <span className="font-semibold text-lg tracking-tight text-[var(--text-primary)] hidden sm:block">CareerDoctor</span>
+                        <span className="font-semibold text-lg tracking-tight text-[var(--text-primary)]">CareerDoctor</span>
                     </Link>
 
+                    {/* Desktop nav links — hidden on mobile */}
                     {session?.user && (
-                        <div className="flex space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar items-center">
+                        <div className="hidden md:flex space-x-1 sm:space-x-2 items-center">
                             <Link href="/" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <Target className="h-4 w-4" /> <span className="hidden sm:inline">Overview</span>
+                                <Target className="h-4 w-4" /> <span>Overview</span>
                             </Link>
                             <Link href="/applications" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <Briefcase className="h-4 w-4" /> <span className="hidden sm:inline">Applications</span>
+                                <Briefcase className="h-4 w-4" /> <span>Applications</span>
                             </Link>
                             <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <Search className="h-4 w-4" /> <span className="hidden sm:inline">Jobs</span>
+                                <Search className="h-4 w-4" /> <span>Jobs</span>
                             </Link>
                             <Link href="/resumes" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <FileText className="h-4 w-4" /> <span className="hidden sm:inline">Resumes</span>
+                                <FileText className="h-4 w-4" /> <span>Resumes</span>
                             </Link>
                             <Link href="/profile" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <User className="h-4 w-4" /> <span className="hidden md:inline">Profile</span>
+                                <User className="h-4 w-4" /> <span>Profile</span>
                             </Link>
 
                             <ThemeToggle />
@@ -47,12 +49,23 @@ export default async function TopNav() {
                         </div>
                     )}
 
+                    {/* Not logged in — desktop */}
                     {!session && (
-                        <div className="flex items-center space-x-3">
+                        <div className="hidden md:flex items-center space-x-3">
                             <ThemeToggle />
                             <Link href="/login" className="text-sm font-medium text-[var(--accent-text)] hover:opacity-80">Sign in</Link>
                         </div>
                     )}
+
+                    {/* Mobile hamburger nav */}
+                    <MobileNav
+                        isLoggedIn={!!session?.user}
+                        userName={session?.user?.name || session?.user?.email}
+                        signOutAction={session?.user ? async () => {
+                            'use server';
+                            await signOut({ redirectTo: '/login' });
+                        } : undefined}
+                    />
 
                 </div>
             </div>

@@ -164,14 +164,14 @@ export default function JobsPageClient({ profileLocation, profileTitle }: { prof
                         </div>
                         <button
                             type="submit"
-                            className="px-6 py-3.5 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors shadow-lg shadow-indigo-900/20"
+                            className="w-full sm:w-auto px-6 py-3.5 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors shadow-lg shadow-indigo-900/20"
                         >
                             Search
                         </button>
                     </form>
 
                     {/* Filters row */}
-                    <div className="mt-5 flex flex-wrap gap-3 items-center">
+                    <div className="mt-5 flex gap-3 items-center overflow-x-auto no-scrollbar pb-2">
                         {/* Date posted */}
                         <div className="flex gap-2 overflow-x-auto no-scrollbar">
                             {DATE_FILTERS.map((f) => (

@@ -55,12 +55,12 @@ export default async function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* Header */}
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-[var(--text-primary)]">Dashboard</h1>
-            <p className="text-[var(--text-secondary)] mt-1">AI-driven insights based on your profile &amp; applications.</p>
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)]">Dashboard</h1>
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1">AI-driven insights based on your profile &amp; applications.</p>
           </div>
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <p className="text-sm text-[var(--text-tertiary)] font-medium uppercase tracking-wider">Response Rate</p>
             <p className="text-3xl font-semibold text-[var(--accent)]">
               {interviewRate}%
@@ -82,24 +82,24 @@ export default async function DashboardPage() {
                 Funnel Conversion
               </h2>
             </div>
-            <div className="flex justify-between items-center bg-[var(--bg-tertiary)] rounded-lg p-6 border border-[var(--border)]">
-              <div className="text-center group">
-                <p className="text-3xl font-bold text-[var(--text-primary)] mb-1">{funnel.applied}</p>
+            <div className="grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4 sm:gap-0 bg-[var(--bg-tertiary)] rounded-lg p-4 sm:p-6 border border-[var(--border)]">
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-1">{funnel.applied}</p>
                 <p className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wide">Applied</p>
               </div>
-              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)]" />
+              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)] hidden sm:block" />
               <div className="text-center">
-                <p className="text-3xl font-bold text-[var(--text-primary)] mb-1">{funnel.viewed}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-1">{funnel.viewed}</p>
                 <p className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wide">Viewed</p>
               </div>
-              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)]" />
+              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)] hidden sm:block" />
               <div className="text-center">
-                <p className="text-3xl font-bold text-[var(--accent)] mb-1">{funnel.responded}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[var(--accent)] mb-1">{funnel.responded}</p>
                 <p className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wide">Responses</p>
               </div>
-              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)]" />
+              <ArrowRight className="h-5 w-5 text-[var(--text-tertiary)] hidden sm:block" />
               <div className="text-center">
-                <p className="text-3xl font-bold text-[var(--success)] mb-1">{funnel.interview}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[var(--success)] mb-1">{funnel.interview}</p>
                 <p className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wide">Interviews</p>
               </div>
             </div>
