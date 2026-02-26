@@ -97,7 +97,10 @@ export async function POST(req: NextRequest) {
         return new NextResponse('Profile not found', { status: 404 });
     }
 
-    const currentAnalysis = (profile as any).careerAnalysis ? JSON.parse((profile as any).careerAnalysis) : null;
+    let currentAnalysis: any = null;
+    try {
+        currentAnalysis = (profile as any).careerAnalysis ? JSON.parse((profile as any).careerAnalysis) : null;
+    } catch { /* Column may not exist in production DB */ }
 
     const systemPrompt = `
 You are "Doc", a highly insightful, slightly witty Career Coach AI for the CareerDoctor app.

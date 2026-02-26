@@ -188,10 +188,13 @@ Rules:
       sendAnalysisEmail(session.user.email, session.user.name, analysis).catch(console.error);
     }
 
-    await prisma.profile.update({
-      where: { userId: session.user.id },
-      data: { careerAnalysis: JSON.stringify(analysis) } as any
-    });
+    // Cache analysis in DB (column may not exist on all environments)
+    try {
+      await prisma.profile.update({
+        where: { userId: session.user.id },
+        data: { careerAnalysis: JSON.stringify(analysis) } as any
+      });
+    } catch { /* Column may not exist in production DB yet, ignore */ }
 
     return analysis;
   } catch {
