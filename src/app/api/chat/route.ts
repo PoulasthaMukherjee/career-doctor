@@ -97,17 +97,13 @@ export async function POST(req: NextRequest) {
         return new NextResponse('Profile not found', { status: 404 });
     }
 
-    let currentAnalysis: any = null;
-    try {
-        currentAnalysis = (profile as any).careerAnalysis ? JSON.parse((profile as any).careerAnalysis) : null;
-    } catch { /* Column may not exist in production DB */ }
+
 
     const systemPrompt = `
 You are "Doc", a highly insightful, slightly witty Career Coach AI for the CareerDoctor app.
 You are talking to ${profile.fullName || 'a user'}.
 Their current headline is: ${profile.title || 'Not specified'}.
 Their skills are: ${profile.skills || 'None listed'}.
-${currentAnalysis ? `Calculated Level: ${currentAnalysis.experienceBreakdown?.level} (${currentAnalysis.experienceBreakdown?.effectiveYOE} YOE)\nCurrent Trajectory: ${currentAnalysis.careerTrajectory?.current} -> ${currentAnalysis.careerTrajectory?.oneYear}` : ''}
 
 Your goal is to be a supportive, conversational career coach. Chat with them normally first! Give specific, actionable advice based on their profile. Answer their questions naturally. Wait for them to ask for advice before giving it. Do not be generic.
 IMPORTANT TOOL USAGE: You have a tool called 'proposeProfileUpdate'. When the user says they want to transition to a new role, gain new skills for a pivot, or update their profile target, you MUST call the proposeProfileUpdate tool immediately. Do NOT just say "I'll update your profile" in text — you must actually call the tool function. The tool will handle showing a confirmation UI to the user.
