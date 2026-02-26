@@ -172,14 +172,6 @@ export async function updateProfileFromAI(targetRole: string, skillsToAdd: strin
             }
         });
 
-        // Clear any cached analysis so it gets regenerated fresh
-        try {
-            await prisma.profile.update({
-                where: { userId: session.user.id },
-                data: { careerAnalysis: null } as any
-            });
-        } catch { /* careerAnalysis column may not exist, ignore */ }
-
         // Trigger a fresh career analysis manually so the data is instantly available
         const { getCareerAnalysis } = await import('./career-analysis');
         await getCareerAnalysis();
