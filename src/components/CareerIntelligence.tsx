@@ -70,6 +70,9 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
         } catch { /* ignore parse errors */ }
 
         const handleProfileUpdate = () => {
+            // Clear stale analysis immediately so the user doesn't see old data
+            setAnalysis(null);
+            localStorage.removeItem(STORAGE_KEY);
             runAnalysis();
         };
 

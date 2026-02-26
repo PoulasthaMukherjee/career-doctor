@@ -60,42 +60,53 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean, onClose: () =
             setMessages(prev => [...prev, assistantMsg]);
 
             const decoder = new TextDecoder();
+            let sseBuffer = ''; // Buffer for incomplete SSE lines
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                const chunk = decoder.decode(value, { stream: true });
+                sseBuffer += decoder.decode(value, { stream: true });
 
-                // Vercel AI SDK Data Stream Protocol parsing
-                const lines = chunk.split('\n');
-                for (const line of lines) {
-                    if (!line) continue;
+                // SSE format: each event is "data: {JSON}\n\n"
+                const events = sseBuffer.split('\n\n');
+                sseBuffer = events.pop() || ''; // Keep incomplete last chunk
 
-                    if (line.startsWith('0:')) {
-                        // Text chunk (JSON wrapped)
+                for (const event of events) {
+                    const lines = event.split('\n');
+                    for (const line of lines) {
+                        if (!line.startsWith('data: ')) continue;
+                        const dataStr = line.slice(6); // Remove "data: " prefix
+                        if (dataStr === '[DONE]') continue;
+
                         try {
-                            const textContent = JSON.parse(line.substring(2));
-                            assistantMsg.content += textContent;
+                            const part = JSON.parse(dataStr);
+
+                            if (part.type === 'text-delta') {
+                                assistantMsg.content += (part.delta || '');
+                            } else if (part.type === 'tool-input-available') {
+                                // Complete tool call with parsed args
+                                assistantMsg.toolInvocations.push({
+                                    toolCallId: part.toolCallId,
+                                    toolName: part.toolName,
+                                    args: part.input
+                                });
+                            } else if (part.type === 'tool-result') {
+                                // Tool execution result - update existing invocation
+                                assistantMsg.toolInvocations = assistantMsg.toolInvocations.map((t: any) =>
+                                    t.toolCallId === part.toolCallId
+                                        ? { ...t, result: part.output }
+                                        : t
+                                );
+                            }
+                            // Ignore other part types (start, end, reasoning, etc.)
                         } catch (e) {
-                            // Fallback for malformed JSON or raw text after prefix
-                            assistantMsg.content += line.substring(2);
+                            // If JSON parse fails, try raw text fallback
+                            if (!line.startsWith('data:')) {
+                                assistantMsg.content += line;
+                            }
                         }
-                    } else if (line.startsWith('9:')) {
-                        // Tool call chunk
-                        try {
-                            const toolCall = JSON.parse(line.substring(2));
-                            assistantMsg.toolInvocations.push({
-                                toolCallId: toolCall.callId,
-                                toolName: toolCall.toolName,
-                                args: toolCall.args
-                            });
-                        } catch (e) { }
-                    } else if (!/^[0-9a-z]:/.test(line)) {
-                        // RAW TEXT FALLBACK: 
-                        // If it doesn't match the "X:" pattern, it's likely raw text deltas
-                        assistantMsg.content += line;
-                    }
 
-                    setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...assistantMsg } : m));
+                        setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...assistantMsg } : m));
+                    }
                 }
             }
 
@@ -131,6 +142,9 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean, onClose: () =
                 }
                 return m;
             }));
+
+            // Clear the cached analysis so CareerIntelligence fetches fresh data
+            localStorage.removeItem('career-analysis-cache');
 
             // Dispatch a custom event to tell the page to refresh its data
             window.dispatchEvent(new Event('profile-updated'));

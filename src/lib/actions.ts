@@ -149,14 +149,36 @@ export async function updateProfileFromAI(targetRole: string, skillsToAdd: strin
         // Merge skills without duplicates
         const updatedSkills = Array.from(new Set([...currentSkills, ...skillsToAdd]));
 
+        // Rewrite the summary to reflect the new career target
+        const currentSummary = profile.summary || '';
+        const updatedSummary = currentSummary
+            ? currentSummary
+                .replace(/targeting\s+[\w\s,/&-]+roles?/gi, `targeting ${targetRole} roles`)
+                .replace(/aspiring\s+[\w\s]+/gi, `aspiring ${targetRole}`)
+            : `Professional pivoting to ${targetRole} with skills in ${skillsToAdd.join(', ')}.`;
+
+        // If the regex didn't change anything, append the target info
+        const finalSummary = (updatedSummary === currentSummary && currentSummary)
+            ? `${currentSummary} Currently targeting ${targetRole} roles.`
+            : updatedSummary;
+
         // Update the profile in the database
         await prisma.profile.update({
             where: { userId: session.user.id },
             data: {
                 title: targetRole,
-                skills: JSON.stringify(updatedSkills)
+                skills: JSON.stringify(updatedSkills),
+                summary: finalSummary,
             }
         });
+
+        // Clear any cached analysis so it gets regenerated fresh
+        try {
+            await prisma.profile.update({
+                where: { userId: session.user.id },
+                data: { careerAnalysis: null } as any
+            });
+        } catch { /* careerAnalysis column may not exist, ignore */ }
 
         // Trigger a fresh career analysis manually so the data is instantly available
         const { getCareerAnalysis } = await import('./career-analysis');
