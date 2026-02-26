@@ -4,11 +4,12 @@ import { computeMetrics, ApplicationInput } from './engines/analysis';
 import { runDiagnosis } from './engines/diagnosis';
 import { runPrescription } from './engines/prescription';
 import { getAIInsights } from './ai';
-import { signIn as nextAuthSignIn } from "@/lib/auth";
+import { auth, signIn as nextAuthSignIn } from "@/lib/auth";
 import AuthError from "next-auth";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 import { registerSchema } from "./validations";
+import { sendWelcomeEmail } from "./email";
 
 export async function getDashboardData(userId: string) {
     const applications = await prisma.application.findMany({
@@ -119,9 +120,51 @@ export async function registerUser(formData: FormData) {
             },
         });
 
+        // Send welcome email (fire and forget, don't await blocking the response)
+        sendWelcomeEmail(email, name || '').catch(console.error);
+
         return { success: "Account created successfully. Please sign in." };
     } catch (error) {
         console.error("Registration error:", error);
         return { error: "Something went wrong during registration." };
+    }
+}
+
+export async function updateProfileFromAI(targetRole: string, skillsToAdd: string[]) {
+    try {
+        const session = await auth();
+        if (!session?.user?.id) throw new Error("Unauthorized");
+
+        const profile = await prisma.profile.findUnique({
+            where: { userId: session.user.id }
+        });
+
+        if (!profile) throw new Error("Profile not found");
+
+        let currentSkills: string[] = [];
+        try {
+            if (profile.skills) currentSkills = JSON.parse(profile.skills);
+        } catch (e) { }
+
+        // Merge skills without duplicates
+        const updatedSkills = Array.from(new Set([...currentSkills, ...skillsToAdd]));
+
+        // Update the profile in the database
+        await prisma.profile.update({
+            where: { userId: session.user.id },
+            data: {
+                title: targetRole,
+                skills: JSON.stringify(updatedSkills)
+            }
+        });
+
+        // Trigger a fresh career analysis manually so the data is instantly available
+        const { getCareerAnalysis } = await import('./career-analysis');
+        await getCareerAnalysis();
+
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update profile from AI:", error);
+        throw error;
     }
 }

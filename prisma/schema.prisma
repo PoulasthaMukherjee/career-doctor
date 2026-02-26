@@ -46,6 +46,7 @@ model Profile {
   projects       String?  // JSON array as string
   achievements   String?  // JSON array as string
   certifications String?  // JSON array as string
+  careerAnalysis String?  // JSON array as string
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

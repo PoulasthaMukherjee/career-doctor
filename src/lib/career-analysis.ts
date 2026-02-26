@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { askGemini } from "./ai";
+import { sendAnalysisEmail } from "./email";
 
 export type CareerAnalysis = {
   experienceBreakdown: {
@@ -113,6 +114,7 @@ ROLE MATCHING RULES (CRITICAL - THINK LOGICALLY):
 - Include both lateral moves AND step-up roles that are REALISTIC for their YOE
 - Include "stretch" roles they could grow into in 6-12 months (mark these clearly)
 - Salary ranges should match THEIR experience level, not the role's senior-level range
+- SALARY CURRENCY: Use the LOCAL currency based on the candidate's location in the profile. Examples: India → "₹8L-12L" or "₹8-12 LPA", US → "$70K-90K", UK → "£50K-65K", Germany → "€55K-70K", Singapore → "S$60K-80K", UAE → "AED 15K-25K/mo", Australia → "A$80K-100K". If location is missing, default to USD.
 
 SEARCH QUERIES:
 - Based on the analysis, suggest 5-8 specific job search queries they should use
@@ -179,7 +181,19 @@ Rules:
 
   try {
     const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    return JSON.parse(cleaned);
+    const analysis = JSON.parse(cleaned) as CareerAnalysis;
+
+    // Email the user their results asynchronously
+    if (session.user.email && session.user.name) {
+      sendAnalysisEmail(session.user.email, session.user.name, analysis).catch(console.error);
+    }
+
+    await prisma.profile.update({
+      where: { userId: session.user.id },
+      data: { careerAnalysis: JSON.stringify(analysis) } as any
+    });
+
+    return analysis;
   } catch {
     console.error('Failed to parse career analysis:', result);
     return null;

@@ -4,6 +4,8 @@ import "./globals.css";
 import TopNav from "@/components/TopNav";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import GlobalChat from "@/components/GlobalChat";
+import { auth } from "@/lib/auth";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -15,11 +17,12 @@ export const metadata: Metadata = {
   description: "Track your job applications, analyze your strategy, and get AI-powered insights to land your dream role.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased flex flex-col min-h-screen`}>
@@ -28,6 +31,7 @@ export default function RootLayout({
           <main className="flex-1">
             {children}
           </main>
+          {session && <GlobalChat />}
           <Footer />
         </ThemeProvider>
       </body>

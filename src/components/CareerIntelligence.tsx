@@ -5,8 +5,9 @@ import { getCareerAnalysis, type CareerAnalysis } from '@/lib/career-analysis';
 import {
     Sparkles, Target, TrendingUp, Zap, BookOpen, Compass,
     ArrowRight, Award, ChevronRight, RefreshCw, Brain,
-    Building2, Briefcase, GraduationCap, AlertCircle, CheckCircle2
+    Building2, Briefcase, GraduationCap, AlertCircle, CheckCircle2, Share2
 } from 'lucide-react';
+import DiagnosisReport from './DiagnosisReport';
 
 const cardClass = "bg-[var(--bg-secondary)] rounded-xl border border-[var(--border)] p-6";
 const STORAGE_KEY = 'career-analysis-cache';
@@ -56,6 +57,7 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
     const [analysis, setAnalysis] = useState<CareerAnalysis | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showReport, setShowReport] = useState(false);
 
     // Load cached analysis from localStorage on mount
     useEffect(() => {
@@ -66,6 +68,13 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                 if (parsed && parsed.headline) setAnalysis(parsed);
             }
         } catch { /* ignore parse errors */ }
+
+        const handleProfileUpdate = () => {
+            runAnalysis();
+        };
+
+        window.addEventListener('profile-updated', handleProfileUpdate);
+        return () => window.removeEventListener('profile-updated', handleProfileUpdate);
     }, []);
 
     async function runAnalysis() {
@@ -125,9 +134,14 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                     </div>
                     <p className="text-lg font-semibold text-[var(--text-primary)]">{analysis.headline}</p>
                 </div>
-                <button onClick={runAnalysis} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors whitespace-nowrap">
-                    <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> <span className="hidden md:inline">Re-analyze</span>
-                </button>
+                <div className="flex items-center gap-2">
+                    <button onClick={() => setShowReport(true)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap">
+                        <Share2 className="h-3.5 w-3.5" /> <span className="hidden md:inline">Share Report</span>
+                    </button>
+                    <button onClick={runAnalysis} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors whitespace-nowrap">
+                        <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> <span className="hidden md:inline">Re-analyze</span>
+                    </button>
+                </div>
             </div>
 
             {/* Experience Breakdown + Profile Strength + Career Trajectory */}
@@ -213,7 +227,7 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                 <div className="space-y-3">
                     {analysis.roleMatches.map((role, i) => (
                         <div key={i} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border)] hover:border-[var(--accent)]/40 transition-colors group">
-                            <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                            <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                                 <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
                                     <span className="text-sm font-bold text-[var(--accent)]">#{i + 1}</span>
                                 </div>
@@ -226,7 +240,7 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                                     <p className="text-xs text-[var(--text-secondary)] mt-0.5">{role.reason}</p>
                                 </div>
                             </div>
-                            <div className="text-left sm:text-right flex-shrink-0 pl-13 sm:pl-0">
+                            <div className="text-left sm:text-right flex-shrink-0 ml-auto">
                                 <p className="text-sm font-bold text-[var(--text-primary)]">{role.salaryRange}</p>
                                 <p className="text-[10px] text-[var(--text-tertiary)] uppercase">Estimated</p>
                             </div>
@@ -304,6 +318,14 @@ export default function CareerIntelligence({ hasProfile }: { hasProfile: boolean
                         ))}
                     </div>
                 </div>
+            )}
+
+            {/* Shareable Report Modal */}
+            {showReport && (
+                <DiagnosisReport
+                    analysis={analysis}
+                    onClose={() => setShowReport(false)}
+                />
             )}
         </div>
     );

@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 import { authConfig } from "./auth.config";
+import { sendWelcomeEmail } from "./email";
 
 import { type DefaultSession } from "next-auth";
 
@@ -75,4 +76,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
         })
     ],
+    events: {
+        async createUser({ user }) {
+            if (user.email) {
+                // This fires for Google/GitHub OAuth signups.
+                // Our Credentials signup uses registerUser in actions.ts directly.
+                sendWelcomeEmail(user.email, user.name || '').catch(console.error);
+            }
+        }
+    }
 });

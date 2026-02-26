@@ -1,11 +1,17 @@
-import { Activity, Target, Briefcase, FileText, LogOut, Search, User } from 'lucide-react';
+import { Activity, Target, Briefcase, FileText, LogOut, Search, User, Mic, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
 import ThemeToggle from './ThemeToggle';
 import MobileNav from './MobileNav';
+import AccountMenu from './AccountMenu';
 
 export default async function TopNav() {
     const session = await auth();
+
+    const signOutAction = session?.user ? async () => {
+        'use server';
+        await signOut({ redirectTo: '/login' });
+    } : undefined;
 
     return (
         <nav className="border-b border-[var(--border)] bg-[var(--bg-secondary)] sticky top-0 z-50">
@@ -32,20 +38,19 @@ export default async function TopNav() {
                             <Link href="/resumes" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
                                 <FileText className="h-4 w-4" /> <span>Resumes</span>
                             </Link>
-                            <Link href="/profile" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
-                                <User className="h-4 w-4" /> <span>Profile</span>
+                            <Link href="/interview-prep" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
+                                <Mic className="h-4 w-4" /> <span>Prep</span>
+                            </Link>
+                            <Link href="/digest" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
+                                <Zap className="h-4 w-4" /> <span>Digest</span>
                             </Link>
 
                             <ThemeToggle />
 
-                            <form action={async () => {
-                                'use server';
-                                await signOut({ redirectTo: '/login' });
-                            }}>
-                                <button type="submit" className="ml-1 p-2 text-[var(--text-tertiary)] hover:text-[var(--danger)] transition-colors rounded-full hover:bg-[var(--danger-light)]">
-                                    <LogOut className="h-5 w-5" />
-                                </button>
-                            </form>
+                            <AccountMenu
+                                userName={session.user.name || session.user.email}
+                                signOutAction={signOutAction!}
+                            />
                         </div>
                     )}
 
@@ -61,10 +66,7 @@ export default async function TopNav() {
                     <MobileNav
                         isLoggedIn={!!session?.user}
                         userName={session?.user?.name || session?.user?.email}
-                        signOutAction={session?.user ? async () => {
-                            'use server';
-                            await signOut({ redirectTo: '/login' });
-                        } : undefined}
+                        signOutAction={signOutAction}
                     />
 
                 </div>

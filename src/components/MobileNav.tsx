@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X, Target, Briefcase, Search, FileText, User, LogOut, Activity } from 'lucide-react';
+import { Menu, X, Target, Briefcase, Search, FileText, User, LogOut, Activity, Mic, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
@@ -37,6 +37,8 @@ export default function MobileNav({ userName, isLoggedIn, signOutAction }: Mobil
         { href: '/jobs', label: 'Find Jobs', icon: Search },
         { href: '/resumes', label: 'Resumes', icon: FileText },
         { href: '/profile', label: 'Profile', icon: User },
+        { href: '/interview-prep', label: 'Interview Prep', icon: Mic },
+        { href: '/digest', label: 'Daily Digest', icon: Zap },
     ];
 
     return (
