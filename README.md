@@ -37,7 +37,7 @@ Most career tools make you fill out endless forms. CareerDoctor flips that.
 
 > *This is what makes CareerDoctor different.*
 
-When you hit **Analyze**, the AI doesn't give generic advice. It reads *your* actual profile — every skill, every role, every gap — and produces a full career diagnosis:
+When you hit **Analyze**, the AI doesn't give generic advice. It reads *your* actual profile - every skill, every role, every gap - and produces a full career diagnosis:
 
 | Analysis | What You Get |
 |----------|-------------|
@@ -73,11 +73,11 @@ Your profile is ready. Edit anything. Export as PDF.
 
 Search live job postings with filters that matter:
 
-- **Date posted** — Last 24h, 3 days, 7 days, 30 days
-- **Type** — Full-time, contract, internship, part-time
-- **Experience** — Entry, mid, senior, no-experience
-- **Remote** — Toggle for remote-only listings
-- **Direct apply links** — One click to the actual application
+- **Date posted** - Last 24h, 3 days, 7 days, 30 days
+- **Type** - Full-time, contract, internship, part-time
+- **Experience** - Entry, mid, senior, no-experience
+- **Remote** - Toggle for remote-only listings
+- **Direct apply links** - One click to the actual application
 
 <br>
 
@@ -109,10 +109,10 @@ If one model is rate-limited, the next one picks up instantly. You never wait.
 
 ## ✨ Also...
 
-- 🌙 **Dark mode** — easy on the eyes, gorgeous on OLED
-- 📱 **Fully responsive** — phone, tablet, desktop
-- 🔐 **Google & GitHub login** — no passwords
-- ⚡ **Fast** — server components, edge-ready, zero bloat
+- 🌙 **Dark mode** - easy on the eyes, gorgeous on OLED
+- 📱 **Fully responsive** - phone, tablet, desktop
+- 🔐 **Google & GitHub login** - no passwords
+- ⚡ **Fast** - server components, edge-ready, zero bloat
 
 <br>
 
