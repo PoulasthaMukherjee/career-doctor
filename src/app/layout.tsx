@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CareerDoctor — AI-Powered Job Search Tracker",
+  title: "CareerDoctor - AI-Powered Job Search Tracker",
   description: "Track your job applications, analyze your strategy, and get AI-powered insights to land your dream role.",
 };
 

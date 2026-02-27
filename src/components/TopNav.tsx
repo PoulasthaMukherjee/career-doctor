@@ -23,7 +23,7 @@ export default async function TopNav() {
                         <span className="font-semibold text-lg tracking-tight text-[var(--text-primary)]">CareerDoctor</span>
                     </Link>
 
-                    {/* Desktop nav links — hidden on mobile */}
+                    {/* Desktop nav links - hidden on mobile */}
                     {session?.user && (
                         <div className="hidden md:flex space-x-1 sm:space-x-2 items-center">
                             <Link href="/" className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5 rounded-md hover:bg-[var(--bg-tertiary)]">
@@ -54,7 +54,7 @@ export default async function TopNav() {
                         </div>
                     )}
 
-                    {/* Not logged in — desktop */}
+                    {/* Not logged in - desktop */}
                     {!session && (
                         <div className="hidden md:flex items-center space-x-3">
                             <ThemeToggle />

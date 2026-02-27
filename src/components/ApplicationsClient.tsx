@@ -96,7 +96,7 @@ export default function ApplicationsClient({ applications: initial }: { applicat
                             {/* Status Indicator Bar */}
                             <div className={`absolute top-0 left-0 w-1 h-full ${BAR_COLORS[app.outcome] || BAR_COLORS.IGNORED}`} />
 
-                            {/* Delete button — always visible */}
+                            {/* Delete button - always visible */}
                             <button
                                 onClick={() => handleDelete(app.id)}
                                 disabled={isDeleting}

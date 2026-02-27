@@ -147,7 +147,7 @@ const PROVIDER_FN: Record<ModelEntry['provider'], (prompt: string, model: string
     hf: callHuggingFace,
 };
 
-// Track providers with no API key — skip them after the first miss
+// Track providers with no API key - skip them after the first miss
 const skippedProviders = new Set<string>();
 
 // ─── Unified Quality-Ordered AI Call ───
@@ -165,11 +165,11 @@ export async function askAI(prompt: string): Promise<string | null> {
         } catch (error: any) {
             const status = error?.status || error?.httpStatusCode;
             if (status === 429 || status === 503) {
-                console.warn(`[AI] ✗ ${entry.label} — rate limited, next...`);
+                console.warn(`[AI] ✗ ${entry.label} - rate limited, next...`);
                 continue;
             }
             if (error?.message?.startsWith('No ')) {
-                console.warn(`[AI] ✗ ${entry.provider} — no API key, skipping provider`);
+                console.warn(`[AI] ✗ ${entry.provider} - no API key, skipping provider`);
                 skippedProviders.add(entry.provider);
                 continue;
             }
@@ -223,7 +223,7 @@ Be specific, actionable, and reference the actual numbers. Keep it concise.`;
 export async function parseResumeWithAI(text: string): Promise<any | null> {
     if (!text || text.trim().length < 50) return null;
 
-    const prompt = `Extract ALL structured data from this resume. Return EXACTLY this JSON format (no markdown, no code blocks). Extract as much as possible — projects, achievements, certifications, links, etc:
+    const prompt = `Extract ALL structured data from this resume. Return EXACTLY this JSON format (no markdown, no code blocks). Extract as much as possible - projects, achievements, certifications, links, etc:
 {
   "name": "Full name or null",
   "email": "Email or null",

@@ -20,7 +20,7 @@ function generateResumeHTML(p: any): string {
     const section = (title: string, content: string) => content ? `<h2>${title}</h2>${content}` : '';
 
     return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>${p.fullName || 'Resume'} — CareerDoctor</title>
+<html><head><meta charset="utf-8"><title>${p.fullName || 'Resume'} - CareerDoctor</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -59,13 +59,13 @@ ${section('Professional Summary', p.summary ? `<p class="summary">${p.summary}</
 ${section('Skills', skills.length ? `<div class="skills-grid">${skills.map((s: string) => `<span class="skill">${s}</span>`).join('')}</div>` : '')}
 
 ${section('Experience', exp.length ? exp.map((e: any) => `
-<div class="item"><div class="item-header"><div><div class="item-title">${e.title || ''}</div><div class="item-sub">${e.company || ''}</div></div><div class="item-meta">${[e.location, [e.startDate, e.endDate].filter(Boolean).join(' — ')].filter(Boolean).join(' • ')}</div></div>${e.description ? `<div class="item-desc">${e.description}</div>` : ''}</div>`).join('') : '')}
+<div class="item"><div class="item-header"><div><div class="item-title">${e.title || ''}</div><div class="item-sub">${e.company || ''}</div></div><div class="item-meta">${[e.location, [e.startDate, e.endDate].filter(Boolean).join(' - ')].filter(Boolean).join(' • ')}</div></div>${e.description ? `<div class="item-desc">${e.description}</div>` : ''}</div>`).join('') : '')}
 
 ${section('Projects', projects.length ? projects.map((p: any) => `
-<div class="item"><div class="item-header"><div><div class="item-title">${p.name || ''}</div></div><div class="item-meta">${[p.startDate, p.endDate].filter(Boolean).join(' — ')}</div></div>${p.techStack ? `<div class="item-tech">${p.techStack}</div>` : ''}${p.description ? `<div class="item-desc">${p.description}</div>` : ''}${p.url ? `<div class="item-meta" style="margin-top:4px">🔗 ${p.url}</div>` : ''}</div>`).join('') : '')}
+<div class="item"><div class="item-header"><div><div class="item-title">${p.name || ''}</div></div><div class="item-meta">${[p.startDate, p.endDate].filter(Boolean).join(' - ')}</div></div>${p.techStack ? `<div class="item-tech">${p.techStack}</div>` : ''}${p.description ? `<div class="item-desc">${p.description}</div>` : ''}${p.url ? `<div class="item-meta" style="margin-top:4px">🔗 ${p.url}</div>` : ''}</div>`).join('') : '')}
 
 ${section('Education', edu.length ? edu.map((e: any) => `
-<div class="item"><div class="item-title">${e.degree || ''}${e.specialization ? ` in ${e.specialization}` : ''}</div><div class="item-sub">${e.institution || ''}</div><div class="item-meta">${[[e.startYear, e.endYear].filter(Boolean).join(' — '), e.grade ? `GPA: ${e.grade}` : ''].filter(Boolean).join(' • ')}</div></div>`).join('') : '')}
+<div class="item"><div class="item-title">${e.degree || ''}${e.specialization ? ` in ${e.specialization}` : ''}</div><div class="item-sub">${e.institution || ''}</div><div class="item-meta">${[[e.startYear, e.endYear].filter(Boolean).join(' - '), e.grade ? `GPA: ${e.grade}` : ''].filter(Boolean).join(' • ')}</div></div>`).join('') : '')}
 
 ${section('Certifications', certifications.length ? certifications.map((c: any) => `
 <div class="item"><div class="item-title">${c.name || ''}</div>${c.issuer ? `<div class="item-sub">${c.issuer}</div>` : ''}<div class="item-meta">${[c.date, c.url ? `🔗 ${c.url}` : ''].filter(Boolean).join(' • ')}</div></div>`).join('') : '')}

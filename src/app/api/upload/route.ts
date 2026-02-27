@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
         if (!existsSync(uploadsDir)) await mkdir(uploadsDir, { recursive: true });
         await writeFile(path.join(uploadsDir, fileName), Buffer.from(bytes));
     } catch {
-        // Expected to fail on Vercel — that's fine, we have base64 in DB
+        // Expected to fail on Vercel - that's fine, we have base64 in DB
     }
 
     return NextResponse.json({ fileName, fileData: base64Data });

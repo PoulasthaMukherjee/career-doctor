@@ -73,7 +73,7 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
     const [downloading, setDownloading] = useState(false);
     const [generatingSummary, setGeneratingSummary] = useState(false);
 
-    // Edit indices — which item is being edited inline
+    // Edit indices - which item is being edited inline
     const [editExp, setEditExp] = useState<number | null>(null);
     const [editEdu, setEditEdu] = useState<number | null>(null);
     const [editProj, setEditProj] = useState<number | null>(null);
@@ -317,7 +317,7 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                                                 <p className="text-sm text-[var(--accent-text)]">{exp.company}</p>
                                                 <div className="flex gap-3 mt-1 text-xs text-[var(--text-tertiary)]">
                                                     {exp.location && <span>📍 {exp.location}</span>}
-                                                    {(exp.startDate || exp.endDate) && <span>📅 {exp.startDate} — {exp.endDate || 'Present'}</span>}
+                                                    {(exp.startDate || exp.endDate) && <span>📅 {exp.startDate} - {exp.endDate || 'Present'}</span>}
                                                 </div>
                                                 {exp.description && <p className="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">{exp.description}</p>}
                                             </div>
@@ -365,7 +365,7 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                                                 <p className="font-semibold text-[var(--text-primary)] text-sm">{edu.degree}{edu.specialization ? ` in ${edu.specialization}` : ''}</p>
                                                 <p className="text-sm text-[var(--accent-text)]">{edu.institution}</p>
                                                 <div className="flex gap-3 mt-1 text-xs text-[var(--text-tertiary)]">
-                                                    {(edu.startYear || edu.endYear) && <span>📅 {edu.startYear} — {edu.endYear || 'Present'}</span>}
+                                                    {(edu.startYear || edu.endYear) && <span>📅 {edu.startYear} - {edu.endYear || 'Present'}</span>}
                                                     {edu.grade && <span>📊 {edu.grade}</span>}
                                                 </div>
                                             </div>
@@ -415,7 +415,7 @@ export default function ProfilePageClient({ initialProfile, resumes }: { initial
                                                 {proj.techStack && <p className="text-xs text-[var(--accent-text)] mt-0.5">{proj.techStack}</p>}
                                                 <div className="flex gap-3 mt-1 text-xs text-[var(--text-tertiary)]">
                                                     {proj.url && <a href={proj.url} target="_blank" className="hover:underline">🔗 {proj.url}</a>}
-                                                    {(proj.startDate || proj.endDate) && <span>📅 {proj.startDate} — {proj.endDate || 'Present'}</span>}
+                                                    {(proj.startDate || proj.endDate) && <span>📅 {proj.startDate} - {proj.endDate || 'Present'}</span>}
                                                 </div>
                                                 {proj.description && <p className="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">{proj.description}</p>}
                                             </div>

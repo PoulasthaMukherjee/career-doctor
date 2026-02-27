@@ -53,7 +53,7 @@ export async function getDigestData(userId: string): Promise<DigestData | null> 
 Context:
 - Candidate title: ${title}
 - Skills they have: ${skills.join(', ')}
-- Day number: ${dayOfYear} (use this to vary your response — give a DIFFERENT tip each day)
+- Day number: ${dayOfYear} (use this to vary your response - give a DIFFERENT tip each day)
 - They have ${applications.length} total applications, ${applied} pending, ${interviewing} in interview stage
 
 Return EXACTLY this JSON format (no markdown, no code blocks):

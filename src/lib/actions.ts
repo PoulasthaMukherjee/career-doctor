@@ -53,7 +53,7 @@ export async function getDashboardData(userId: string) {
         offer: appInputs.filter(a => a.outcome === 'OFFER').length
     };
 
-    // Get AI insights (non-blocking — gracefully returns null if no key)
+    // Get AI insights (non-blocking - gracefully returns null if no key)
     let aiInsights = null;
     try {
         aiInsights = await getAIInsights(JSON.stringify({
