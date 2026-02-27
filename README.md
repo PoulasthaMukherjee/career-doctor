@@ -70,13 +70,24 @@ Search live job postings filtered by recency, type, seniority, and remote availa
 
 ## 📊 Track Every Application
 
-Follow each application from **Wishlist → Applied → Interview → Offer**. See your conversion rates, spot where you're dropping off, and get tips to improve.
+Follow each application from **Wishlist → Applied → Interview → Offer**. But it's not just a list:
+
+- **Funnel Analytics** - See your conversion rates at every stage and spot where candidates are dropping off
+- **AI Insights** - Get personalized tips based on your actual application data, companies, and roles
+- **Behavioral Diagnosis** - The engine detects patterns (applying too late, targeting wrong company sizes, ignoring follow-ups) and tells you what to fix
+- **Response Rate Tracking** - Know exactly how many companies are getting back to you
 
 <br>
 
-## 📧 Career Report, In Your Inbox
+## 📧 Daily Career Digest
 
-Get your full career analysis emailed to you - a beautifully formatted report with role matches, skill gaps, action items, and trajectory.
+A personalized daily briefing powered by AI:
+
+- **Tip of the Day** - Actionable career advice specific to your role and level (not generic "network more" fluff)
+- **Skill Spotlight** - A skill you should learn next, with free resources (real links to freeCodeCamp, Coursera, YouTube)
+- **Pipeline Status** - How many apps are pending, interviewing, or need follow-up
+- **Follow-up Nudges** - "You applied to Company X 14 days ago with no response. Time to follow up."
+- **Email Reports** - Get your full career analysis emailed to you as a beautifully formatted report
 
 <br>
 
