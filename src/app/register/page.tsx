@@ -29,7 +29,7 @@ export default function RegisterPage() {
         <div className="min-h-screen bg-[var(--bg-primary)] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="flex justify-center text-[var(--accent)]">
-                    <Activity className="h-12 w-12" />
+                    <Activity className="h-12 w-12 text-[var(--accent)]" />
                 </div>
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--text-primary)]">Create your account</h2>
             </div>

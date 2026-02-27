@@ -47,7 +47,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased flex flex-col min-h-screen`}>
+      <body className={`${inter.variable} antialiased flex flex-col min-h-screen`} suppressHydrationWarning>
         <ThemeProvider>
           <TopNav />
           <main className="flex-1">
