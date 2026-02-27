@@ -15,6 +15,13 @@ export default function LoginPage() {
                 <div className="bg-[var(--bg-secondary)] py-8 px-4 shadow-[var(--card-shadow)] border border-[var(--border)] sm:rounded-xl sm:px-10">
                     <LoginForm />
                 </div>
+
+                <div className="mt-4 p-4 bg-[var(--bg-tertiary)] border border-[var(--border)] sm:rounded-xl">
+                    <p className="text-xs text-center text-[var(--text-tertiary)]">
+                        <span className="font-semibold text-[var(--text-secondary)]">Demo Account:</span>{' '}
+                        demo@careerdoctor.app / demo1234
+                    </p>
+                </div>
             </div>
         </div>
     );
