@@ -13,8 +13,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CareerDoctor - AI-Powered Job Search Tracker",
-  description: "Track your job applications, analyze your strategy, and get AI-powered insights to land your dream role.",
+  title: "CareerDoctor - AI-Powered Career Intelligence",
+  description: "Upload your resume, get a full career diagnosis, chat with an AI coach that updates your profile, find jobs, and track applications. All in one place.",
+  metadataBase: new URL('https://career-doctor.vercel.app'),
+  openGraph: {
+    title: "CareerDoctor - AI-Powered Career Intelligence",
+    description: "Drop your resume. Get diagnosed. Chat with Doc. Land the job.",
+    url: "https://career-doctor.vercel.app",
+    siteName: "CareerDoctor",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CareerDoctor - AI-Powered Career Intelligence",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CareerDoctor - AI-Powered Career Intelligence",
+    description: "Drop your resume. Get diagnosed. Chat with Doc. Land the job.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default async function RootLayout({
