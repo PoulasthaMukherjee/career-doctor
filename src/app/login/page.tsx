@@ -21,6 +21,9 @@ export default function LoginPage() {
                         <span className="font-semibold text-[var(--text-secondary)]">Demo Account:</span>{' '}
                         demo@careerdoctor.app / demo1234
                     </p>
+                    <p className="text-[10px] text-center text-[var(--text-tertiary)] mt-1.5">
+                        Email features (career reports, digests) are not available in demo mode. Sign up for the full experience.
+                    </p>
                 </div>
             </div>
         </div>
