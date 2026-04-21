@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import GlobalChat from "@/components/GlobalChat";
 import { auth } from "@/lib/auth";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -55,6 +56,7 @@ export default async function RootLayout({
           </main>
           {session && <GlobalChat />}
           <Footer />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
